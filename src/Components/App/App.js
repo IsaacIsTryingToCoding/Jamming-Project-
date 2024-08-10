@@ -6,48 +6,10 @@ import SearchBar from "../SearchBar/SearchBar";
 import { Spotify } from "../../util/Spotify";
 
 function App () {
-  const [searchResults, setSearchResults] = useState([
-    {
-      name: "example track name 1",
-      artist: "exmaple track artist 1",
-      album: "example track album 1",
-      id: 1,
-    },
-    {
-      name: "example track name 2",
-      artist: "exmaple track artist 1",
-      album: "example track album 1",
-      id: 2,
-    },
-    {
-      name: "example track name 3",
-      artist: "exmaple track artist 1",
-      album: "example track album 1",
-      id: 3,
-    },
-    {
-      name: "example track name 4",
-      artist: "exmaple track artist 1",
-      album: "example track album 1",
-      id: 4,
-    },
-  ]);
-
+  const [searchResults, setSearchResults] = useState([]);
   const [playlistName, setPlaylistName] = useState("Exmaple Playlist Name 1");
-  const [playlistTracks, setPlaylistTracks] = useState([
-    {
-      name: "Example Playlist Name 1",
-      artist: "Example Playlist Artist 1",
-      album: "Example Playlist Album 1",
-      id: 5,
-    },
-    {
-      name: "Example Playlist Name 2",
-      artist: "Example Playlist Artist 2",
-      album: "Example Playlist Album 2",
-      id: 6,
-    },
-  ]);
+  const [playlistTracks, setPlaylistTracks] = useState([]);
+  const [showConfirmaion, setShowConfirmation] = useState(false);
 
   function addTrack(track) {
     const existingTrack = playlistTracks.find((t) => t.id === track.id);
@@ -73,6 +35,8 @@ function App () {
     Spotify.savePlaylist(playlistName, trackURIs).then(() => {
       setPlaylistName("New PLaylist")
       setPlaylistTracks([]);
+      setShowConfirmation(true);
+      setTimeout(() => setShowConfirmation(false), 3500);
     });
   };
 
@@ -99,6 +63,13 @@ function App () {
               onNameChange={updatePlaylistName} 
               onSave={savePlaylist}
               />
+              <div>
+                {showConfirmaion && (
+                  <div className={styles.confirmationMessage}>
+                    Playlist successfully saved to your profile!
+                  </div>
+                )}
+              </div>
           </div>
         </div>
       </div>
